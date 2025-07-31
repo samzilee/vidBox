@@ -1,75 +1,112 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import AppCarousel from "@/components/AppCarousel";
+import ShowCase from "@/components/ShowCase";
+import { logos } from "@/constants/logos";
+import {
+  FetchLatestMovie,
+  FetchLatestTV,
+  FetchPopular,
+  FetchTrending,
+} from "@/services/api";
+import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import React, { useState } from "react";
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function index() {
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-export default function HomeScreen() {
+  const handleRefresh = () => {
+    setRefreshing(true);
+    const timeOutId = setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+
+    return () => clearTimeout(timeOutId);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View className="flex-1 bg-primary">
+      <View>
+        <View className="flex flex-row items-center justify-between">
+          <Image
+            source={logos.defaultImg}
+            className="max-w-[150px] max-h-[50px] my-2 rounded-lg ml-5"
+          />
+          <View className="flex flex-row items-center gap-4 pr-7">
+            <Link href={"/search/Search"}>
+              <Ionicons name="search-outline" size={26} color={"white"} />
+            </Link>
+
+            <TouchableOpacity onPress={() => {}}>
+              <Ionicons name="person-circle" size={40} color={"white"} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View className="flex flex-row w-full gap-8 p-5">
+          <Link href={`/viewAll/Trending`}>
+            <Text className="text-lg font-bold text-white">Trending</Text>
+          </Link>
+          <Link href={`/viewAll/Popular`}>
+            <Text className="text-lg font-bold text-white">Popular</Text>
+          </Link>
+        </View>
+      </View>
+
+      <ScrollView
+        className="pb-5"
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
+        {!refreshing && (
+          <>
+            <AppCarousel />
+
+            <View className="flex flex-col flex-1 gap-5 mt-3">
+              {/* Trending */}
+              <ShowCase
+                title="Trending"
+                viewAll={true}
+                fetchData={() => FetchTrending(1, "day")}
+                type=""
+              />
+
+              {/* Popular */}
+              <ShowCase
+                title="Popular"
+                viewAll={false}
+                fetchData={() => FetchPopular("movie", 1)}
+                type="both"
+              />
+
+              {/* Laest Movies */}
+              <ShowCase
+                title="Latest Movies"
+                viewAll={true}
+                fetchData={() => FetchLatestMovie(1)}
+                type="movie"
+              />
+
+              {/* Latest Tv Series */}
+              <ShowCase
+                title="Latest TV Series"
+                viewAll={true}
+                fetchData={() => FetchLatestTV(1)}
+                type="tv"
+              />
+            </View>
+          </>
+        )}
+      </ScrollView>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
