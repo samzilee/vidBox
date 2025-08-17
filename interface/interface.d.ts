@@ -34,7 +34,7 @@ interface TopSearch {
 }
 
 
-interface Movedetails {
+interface Moviedetails {
   adult: boolean;
   id: number;
   title: string;
@@ -95,6 +95,7 @@ interface TvShowDetails {
   next_episode_to_air?: Episode;
   networks: Network[];
   seasons: Season[];
+  credits: Credits;
 }
 
 interface Similar {
@@ -114,6 +115,19 @@ interface Similar {
   vote_average:number;
   vote_count: number;
 }
+
+interface SeasonData {
+  _id: string;
+  air_date: string;
+  episodes: Episode[];
+  name: string;
+  overview: string;
+  id: number;
+  poster_path: string | null;
+  season_number: number;
+  vote_average: number;
+}
+
 
 interface Credits {
   cast: Cast[];
@@ -153,6 +167,21 @@ interface Episode {
   season_number: number;
   show_id: number;
   still_path: string | null;
+  crew?: CrewMember[];
+}
+
+interface CrewMember {
+  job: string;
+  department: string;
+  credit_id: string;
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
 }
 
 interface Network {
@@ -172,6 +201,12 @@ interface Company {
 interface Country {
   iso_3166_1: string;
   name: string;
+}
+
+interface CountryProps {
+  iso_3166_1: string;
+  english_name: String;
+  native_name: string;
 }
 
 interface Season {
@@ -196,4 +231,17 @@ interface BelongsToCollection {
   name: string;
   poster_path: string;
   backdrop_path: string;
+}
+
+interface video {
+  iso_639_1:string,
+  iso_3266_1:string,
+  name:string,
+  key:string,
+  site:string,
+  size: number,
+  type:string,
+  official:boolean,
+  published_at:string,
+  id:number
 }

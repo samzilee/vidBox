@@ -6,8 +6,8 @@ const TMDB_CONFIG = {
     }
 }
 
- export const FetchTrending = async(page:number, time_window:string) => {
-    const endpoint = `https://api.themoviedb.org/3/trending/all/${time_window}?language=en-US&page=${page}`
+ export const FetchTrending = async(page:number, time_window:string, type?:string) => {
+    const endpoint = `https://api.themoviedb.org/3/trending/${type || "all"}/${time_window}?language=en-US&page=${page}`
 
     const response = await fetch(endpoint, {headers:TMDB_CONFIG.header})
 
@@ -103,8 +103,8 @@ export const FetchDetails = async(media_type:string ,id:string) => {
     return data;
 }
 
-export const FetchSimilar = async(id:number, page:number) => {
-    const endpoint = `https://api.themoviedb.org/3/movie/${id}/similar?language=en-US&page=${page}`
+export const FetchSimilar = async(id:number,media_type:string, page:number) => {
+    const endpoint = `https://api.themoviedb.org/3/${media_type}/${id}/similar?language=en-US&page=${page}`
 
     const response = await fetch(endpoint, {headers:TMDB_CONFIG.header})
 
@@ -115,4 +115,48 @@ export const FetchSimilar = async(id:number, page:number) => {
     const data = await response.json();
 
     return data.results;
+}
+
+export const FetchEpisodes = async(id:number, season_number:number) => {
+   const endpoint = `https://api.themoviedb.org/3/tv/${id}/season/${season_number}?language=en-US`
+    const response = await fetch(endpoint, {headers:TMDB_CONFIG.header})
+
+    if(!response.ok){
+        //@ts-ignore
+        throw new Error("faild to fetch Query", response.statusText)
+    }
+    const data = await response.json();
+
+    return data;
+}
+
+
+export const FetchVideo = async(id:number, media_type:string) => {
+   const endpoint = `https://api.themoviedb.org/3/${media_type}/${id}/videos?language=en-US`
+    const response = await fetch(endpoint, {headers:TMDB_CONFIG.header})
+
+    if(!response.ok){
+        //@ts-ignore
+        throw new Error("faild to fetch Query", response.statusText)
+    }
+    const data = await response.json();
+
+    return data.results;
+}
+
+export const DiscoverMedias = async (genres:Array<Genre>, country:CountryProps | null, page:number, media_type:string) => {
+    const MovieEndpoint =  `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc${genres.length > 0 ? "&with_genres=" + genres.map((genre) => genre.id):""}${country ? "&with_origin_country=" + country.iso_3166_1 : ""}`;
+    
+   const TvEndpoint = `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=${page}&sort_by=popularity.desc${genres.length > 0 ? "&with_genres=" + genres.map((genre) => genre.id):""}${country ? "&with_origin_country=" + country.iso_3166_1 : ""}`;
+   
+    const response = await fetch(media_type === "movie" ? MovieEndpoint : TvEndpoint, {headers:TMDB_CONFIG.header})
+
+    if(!response.ok){
+        //@ts-ignore
+        throw new Error("faild to fetch Query", response.statusText)
+    }
+    const data = await response.json();
+
+    return data.results;
+    
 }

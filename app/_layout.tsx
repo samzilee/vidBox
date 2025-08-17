@@ -8,6 +8,7 @@ export default function _layout() {
   return (
     <GestureHandlerRootView>
       <StatusBar hidden={false} />
+
       <Stack screenOptions={{ freezeOnBlur: true, navigationBarHidden: true }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="details/[id]" options={{ headerShown: false }} />

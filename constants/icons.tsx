@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 interface props {
   color: string;
-  outline: boolean;
+  outline?: boolean;
   size: number;
 }
 
@@ -46,10 +46,22 @@ const more = ({ color, outline, size }: props) => {
   return <Ionicons name="apps" color={color} size={size} />;
 };
 
+//Search Icon
+const searchIcon = () => {
+  return <Ionicons name="search" size={24} color={"white"} />;
+};
+
+//Back Icon or Chevron
+const backIcon = () => {
+  return <Ionicons name="chevron-back" size={29} color={"white"} />;
+};
+
 export const icons = {
   home,
   movies,
   tv_series,
   watch_list,
   more,
+  searchIcon,
+  backIcon,
 };

@@ -1,6 +1,7 @@
 import LoadMoreIndicator from "@/components/LoadMoreIndicator";
 import { SearchCard, TopSearchCard } from "@/components/SearchCard";
-import { SearchCardSkeleton } from "@/components/Skeleton";
+import { LinearCardListSkeleton } from "@/components/Skeleton";
+import { icons } from "@/constants/icons";
 import { FetchCountries, FetchQuery } from "@/services/api";
 import { getTopSearch } from "@/services/appWrite";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,11 +9,11 @@ import { useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   Platform,
-  SafeAreaView,
+  ScrollView,
   Text,
   TextInput,
   ToastAndroid,
-  TouchableOpacity,
+  TouchableHighlight,
   View,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -106,11 +107,6 @@ const Search = () => {
       if (mainResult.length === 0) {
         setLoadingMore(false);
         setPaginationEnd(true);
-        if (Platform.OS !== "android") return;
-        return ToastAndroid.show(
-          "No more media found. Try a different search?",
-          5
-        );
       }
 
       setData((prev) => [...prev, ...mainResult]);
@@ -146,18 +142,13 @@ const Search = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-primary">
+    <View className="flex-1 bg-primary">
       {/* Search Header */}
       <View className="w-full h-[80px] p-5">
         <View className="flex flex-row items-center flex-1 px-2 border rounded-lg border-gray-400/80">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons
-              name="arrow-back-outline"
-              size={24}
-              color="white"
-              className=""
-            />
-          </TouchableOpacity>
+          <TouchableHighlight onPress={() => navigation.goBack()}>
+            {icons.backIcon()}
+          </TouchableHighlight>
           <TextInput
             placeholder="Search"
             placeholderTextColor="gray"
@@ -166,17 +157,17 @@ const Search = () => {
             value={query}
             onChangeText={setQuery}
           />
-          <TouchableOpacity
+          <TouchableHighlight
             onPress={() => {
               setQuery("");
             }}
           >
             {query === "" ? (
-              <Ionicons name="search-outline" size={24} color={"white"} />
+              icons.searchIcon()
             ) : (
               <Ionicons name="close-outline" size={24} color={"white"} />
             )}
-          </TouchableOpacity>
+          </TouchableHighlight>
         </View>
       </View>
 
@@ -185,7 +176,12 @@ const Search = () => {
           {query === "" ? "Top Search" : "Results"}
         </Text>
         {loading ? (
-          <SearchCardSkeleton />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            className="animate-pulse"
+          >
+            <LinearCardListSkeleton />
+          </ScrollView>
         ) : ferror ? (
           <Text className="w-full text-lg font-bold text-center text-gray-400">
             {errorMessage}
@@ -217,12 +213,13 @@ const Search = () => {
               <LoadMoreIndicator
                 loadingMore={loadingMore}
                 paginationEnd={paginationEnd}
+                errorMessage="No more media found. Try a different search?"
               />
             }
           />
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

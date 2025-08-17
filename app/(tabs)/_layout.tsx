@@ -76,6 +76,7 @@ export default function _layout() {
       <Tabs.Screen
         name="movies"
         options={{
+          headerShown: false,
           headerStyle: {
             backgroundColor: "#111827",
           },
@@ -91,6 +92,7 @@ export default function _layout() {
       <Tabs.Screen
         name="tv_series"
         options={{
+          headerShown: false,
           headerStyle: {
             backgroundColor: "#111827",
           },
@@ -110,6 +112,7 @@ export default function _layout() {
       <Tabs.Screen
         name="watch_list"
         options={{
+          headerShown: false,
           headerStyle: {
             backgroundColor: "#111827",
           },
@@ -129,6 +132,7 @@ export default function _layout() {
       <Tabs.Screen
         name="more"
         options={{
+          headerShown: false,
           headerStyle: {
             backgroundColor: "#111827",
           },

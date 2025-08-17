@@ -16,12 +16,12 @@ export const logos = {
     defaultImg: defaultImg,
     profile:profile,
     vector: {
-        default_vector:default_vector,
-        default_monochrome:default_monochrome,
-        default_monochrome_black:default_monochrome_black,
-        default_monochrome_white:default_monochrome_white,
+        default_vector: default_vector,
+        default_monochrome: default_monochrome,
+        default_monochrome_black: default_monochrome_black,
+        default_monochrome_white: default_monochrome_white,
         isolated_layout: isolated_layout,
-        isolated_monochrome_black:isolated_monochrome_black,
-        isolated_monochrome_white:isolated_monochrome_white
+        isolated_monochrome_black: isolated_monochrome_black,
+        isolated_monochrome_white: isolated_monochrome_white
     }
 }

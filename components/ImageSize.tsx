@@ -26,7 +26,7 @@ export const MediumImage = (path: string, fullURL: boolean) => {
   ) : (
     <Image
       source={{ uri: `https://image.tmdb.org/t/p/w185${path}` }}
-      className="bg-gray-500 rounded-lg w-[140px] h-[190px]"
+      className="bg-gray-500 rounded-lg w-[120px] h-[170px]"
       resizeMode="cover"
     />
   );

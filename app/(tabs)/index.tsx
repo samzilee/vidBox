@@ -1,5 +1,6 @@
 import AppCarousel from "@/components/AppCarousel";
 import ShowCase from "@/components/ShowCase";
+import { icons } from "@/constants/icons";
 import { logos } from "@/constants/logos";
 import {
   FetchLatestMovie,
@@ -8,7 +9,7 @@ import {
   FetchTrending,
 } from "@/services/api";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import {
   Image,
@@ -18,6 +19,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function index() {
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -32,7 +34,7 @@ export default function index() {
   };
 
   return (
-    <View className="flex-1 bg-primary">
+    <SafeAreaView className="flex-1 bg-primary">
       <View>
         <View className="flex flex-row items-center justify-between">
           <Image
@@ -40,9 +42,9 @@ export default function index() {
             className="max-w-[150px] max-h-[50px] my-2 rounded-lg ml-5"
           />
           <View className="flex flex-row items-center gap-4 pr-7">
-            <Link href={"/search/Search"}>
-              <Ionicons name="search-outline" size={26} color={"white"} />
-            </Link>
+            <TouchableOpacity onPress={() => router.push("/search/Search")}>
+              {icons.searchIcon()}
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {}}>
               <Ionicons name="person-circle" size={40} color={"white"} />
@@ -107,6 +109,6 @@ export default function index() {
           </>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

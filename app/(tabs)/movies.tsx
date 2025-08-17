@@ -1,10 +1,8 @@
+import Tabs_MovieTv_page from "@/components/Movie&Tv_page";
 import React from "react";
-import { Text, View } from "react-native";
 
-export default function movies() {
-  return (
-    <View className="flex-1 bg-primary">
-      <Text>movies</Text>
-    </View>
-  );
-}
+const movies = () => {
+  return <Tabs_MovieTv_page title="Movies" media_type="movie" />;
+};
+
+export default movies;

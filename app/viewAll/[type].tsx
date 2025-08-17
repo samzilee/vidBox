@@ -1,23 +1,24 @@
 import LoadMoreIndicator from "@/components/LoadMoreIndicator";
+import { icons } from "@/constants/icons";
 import {
   FetchLatestMovie,
   FetchLatestTV,
   FetchPopular,
   FetchTrending,
 } from "@/services/api";
-import { Ionicons } from "@expo/vector-icons";
-import { Link, useLocalSearchParams, useNavigation } from "expo-router";
+import { Link, router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
   Platform,
-  SafeAreaView,
   Text,
   ToastAndroid,
+  TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatGrid } from "react-native-super-grid";
 
 const viewAll = () => {
@@ -30,14 +31,18 @@ const viewAll = () => {
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [paginationEnd, setPaginationEnd] = useState<boolean>(false);
+  const [media_type, setMedia_type] = useState<string | null>(null);
 
   const fixedFetch = async () => {
     const newType = type.toString().toLowerCase();
+
     if (newType === "trending") {
       return await FetchTrending(page, trendOption);
     } else if (newType === "latest movies") {
+      setMedia_type("movie");
       return await FetchLatestMovie(page);
     } else if (newType === "latest tv series") {
+      setMedia_type("tv");
       return await FetchLatestTV(page);
     } else if (newType === "popular") {
       return FetchPopular(popularOption, page);
@@ -77,10 +82,6 @@ const viewAll = () => {
       if (moreData.length === 0) {
         setLoadingMore(false);
         setPaginationEnd(true);
-        if (Platform.OS === "android") {
-          ToastAndroid.show("No more media found. Try a different search?", 4);
-        }
-
         return;
       }
 
@@ -99,17 +100,16 @@ const viewAll = () => {
   return (
     <SafeAreaView className="flex-1 bg-primary">
       <View className="flex flex-row items-center justify-between w-full p-5">
-        <TouchableOpacity
-          className="flex flex-row items-center gap-2"
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back-outline" size={24} color="white" />
-          <Text className="text-xl font-bold text-white">{type}</Text>
-        </TouchableOpacity>
+        <TouchableHighlight onPress={() => navigation.goBack()}>
+          <View className="flex flex-row items-center gap-2">
+            {icons.backIcon()}
+            <Text className="text-xl font-bold text-white">{type}</Text>
+          </View>
+        </TouchableHighlight>
 
-        <Link href="/search/Search">
-          <Ionicons name="search" size={27} color="white" />
-        </Link>
+        <TouchableOpacity onPress={() => router.push("/search/Search")}>
+          {icons.searchIcon()}
+        </TouchableOpacity>
       </View>
 
       {type === "Trending" && (
@@ -163,7 +163,7 @@ const viewAll = () => {
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <Link
-              href={`/details/${item.id}_${item.media_type || popularOption}`}
+              href={`/details/${item.id}_${item.media_type || media_type || popularOption}`}
               className="h-[200px]"
             >
               <Image
@@ -179,9 +179,10 @@ const viewAll = () => {
             <LoadMoreIndicator
               loadingMore={loadingMore}
               paginationEnd={paginationEnd}
+              errorMessage="No more media found."
             />
           }
-          onEndReached={() => setPage((prev) => prev + 1)}
+          onEndReached={() => !loadingMore && setPage((prev) => prev + 1)}
         />
       )}
     </SafeAreaView>

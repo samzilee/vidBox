@@ -1,6 +1,6 @@
 import { FetchTrending } from "@/services/api";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -69,7 +69,6 @@ export default function AppCarousel() {
             snapEnabled={true}
             autoPlayInterval={5000}
             autoPlay={true}
-            defaultIndex={0}
             onProgressChange={(offsetProgress, absoluteProgress) =>
               handleProgress(absoluteProgress)
             }
@@ -80,7 +79,7 @@ export default function AppCarousel() {
                 className="w-full h-full"
               >
                 <Image
-                  className="object-cover rounded-xl size-full"
+                  className="object-cover bg-gray-500 rounded-xl size-full"
                   source={{
                     uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
                   }}
@@ -131,8 +130,12 @@ export default function AppCarousel() {
 
               {/* Watch now */}
               <TouchableOpacity
-                className="flex-1 py-4 rounded-lg bg-secondary"
-                onPress={() => {}}
+                className="flex-1 py-4 rounded-lg bg-secondary active:opacity-50"
+                onPress={() =>
+                  router.push(
+                    `/details/${displaying?.id}_${displaying?.media_type}_fromhome`
+                  )
+                }
               >
                 <Text className="font-bold text-center text-white">
                   WATCH NOW

@@ -54,8 +54,8 @@ const ShowCase = ({ title, viewAll, type, fetchData }: props) => {
   };
 
   return (
-    <View className="h-[250px] px-5">
-      <View className="flex flex-row items-center justify-between mb-3">
+    <View className="">
+      <View className="flex flex-row items-center justify-between px-5 mb-3">
         <Text className="text-lg font-bold text-white">{title}</Text>
         {viewAll ? (
           <Link href={`/viewAll/${title}`}>
@@ -85,6 +85,7 @@ const ShowCase = ({ title, viewAll, type, fetchData }: props) => {
           data={data}
           horizontal
           showsHorizontalScrollIndicator={false}
+          style={{ paddingHorizontal: 5 }}
           ItemSeparatorComponent={() => <View className="w-4" />}
           renderItem={({ item }) => (
             <ShowCaseCard

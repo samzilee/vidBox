@@ -2,9 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, ImageBackground, Text, View } from "react-native";
 
-const DetailHeader = ({ media_data }: any) => {
+const DetailPoster = ({
+  media_data,
+}: {
+  media_data: Moviedetails | TvShowDetails | null;
+}) => {
   return (
-    <View className="h-[300px]">
+    <View className="h-[400px]">
       <ImageBackground
         source={{
           uri: `https://image.tmdb.org/t/p/w780${media_data?.backdrop_path}`,
@@ -30,7 +34,8 @@ const DetailHeader = ({ media_data }: any) => {
                 className="max-w-full text-2xl text-white"
                 numberOfLines={1}
               >
-                {media_data?.title}
+                {/* @ts-ignore */}
+                {media_data?.title || media_data?.name}
               </Text>
 
               <View className="flex-row items-center gap-5">
@@ -45,7 +50,9 @@ const DetailHeader = ({ media_data }: any) => {
                 </View>
 
                 <Text className="font-semibold text-white">
+                  {/* @ts-ignore */}
                   {media_data?.release_date?.split("-")[0] ||
+                    // @ts-ignore
                     media_data?.first_air_date?.split("-")[0]}
                 </Text>
               </View>
@@ -57,4 +64,4 @@ const DetailHeader = ({ media_data }: any) => {
   );
 };
 
-export default DetailHeader;
+export default DetailPoster;
