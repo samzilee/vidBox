@@ -3,7 +3,7 @@ import { SearchCard, TopSearchCard } from "@/components/SearchCard";
 import { LinearCardListSkeleton } from "@/components/Skeleton";
 import { icons } from "@/constants/icons";
 import { FetchCountries, FetchQuery } from "@/services/api";
-import { getTopSearch } from "@/services/appWrite";
+import { getTopSearch, updateSearchCount } from "@/services/appWrite";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ import {
   View,
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Search = () => {
   const navigation = useNavigation();
@@ -55,13 +56,14 @@ const Search = () => {
     if (query === "") {
       FetchTopSearch();
     } else {
+      reset();
       const timeOutId = setTimeout(async () => {
         if (query.trim()) {
           reset();
           await handleSearch();
         } else {
         }
-      }, 700);
+      }, 1000);
       return () => clearTimeout(timeOutId);
     }
   }, [query]);
@@ -79,7 +81,7 @@ const Search = () => {
         setErrorMessage("Media Not Found");
       } else {
         setData(mainResult);
-        // updateSearchCount(query, result[0]);
+        updateSearchCount(query, mainResult[0]);
       }
       setLoading(false);
     } catch (error) {
@@ -116,7 +118,7 @@ const Search = () => {
       console.log(error);
 
       if (Platform.OS === "android") {
-        ToastAndroid.show("Error", 5);
+        ToastAndroid.show("Error", ToastAndroid.LONG);
       }
     }
   };
@@ -142,7 +144,7 @@ const Search = () => {
   };
 
   return (
-    <View className="flex-1 bg-primary">
+    <SafeAreaView className="flex-1 bg-primary">
       {/* Search Header */}
       <View className="w-full h-[80px] p-5">
         <View className="flex flex-row items-center flex-1 px-2 border rounded-lg border-gray-400/80">
@@ -190,7 +192,7 @@ const Search = () => {
           <FlatList
             style={{ paddingBottom: 10 }}
             data={topSearched}
-            keyExtractor={(item) => item.movie_id.toString()}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <TopSearchCard topSearch={item} countries={countries} />
             )}
@@ -219,7 +221,7 @@ const Search = () => {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

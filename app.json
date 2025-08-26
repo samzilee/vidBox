@@ -4,7 +4,7 @@
     "slug": "vidBox",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logo/cover.png",
+    "icon": "./assets/images/logo/default.png",
     "scheme": "vidbox",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,

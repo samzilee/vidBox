@@ -16,7 +16,7 @@ interface props {
 const ShowCase = ({ title, viewAll, type, fetchData }: props) => {
   const [data, setData] = useState<Array<media_type>>([]);
   const [ferror, setError] = useState<boolean>(false);
-  const [option, setOption] = useState<string>("movie");
+  const [option, setOption] = useState<string>("tv");
 
   useEffect(() => {
     if (data.length === 0) {
@@ -54,7 +54,7 @@ const ShowCase = ({ title, viewAll, type, fetchData }: props) => {
   };
 
   return (
-    <View className="">
+    <View className="h-[250px]">
       <View className="flex flex-row items-center justify-between px-5 mb-3">
         <Text className="text-lg font-bold text-white">{title}</Text>
         {viewAll ? (

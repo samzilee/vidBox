@@ -1,5 +1,6 @@
 import { FetchEpisodes } from "@/services/api";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -10,7 +11,6 @@ import {
   View,
 } from "react-native";
 import { Tabs } from "react-native-collapsible-tab-view";
-import WatchModal from "./WatchModal";
 
 const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
@@ -23,9 +23,12 @@ const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
   useEffect(() => {
     if (!selectedSeason) {
       setSelectedSeason(() => {
-        return media_data.seasons.filter(
+        //remove special seasons.
+        const seasons = media_data.seasons.filter(
           (season) => season.season_number !== 0
-        )[0];
+        );
+
+        return seasons[seasons.length - 1];
       });
     }
   }, []);
@@ -71,7 +74,7 @@ const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
   if (!media_data && !allEpisodes) return;
   return (
     <Tabs.ScrollView
-      className="py-10"
+      className="mt-10"
       scrollEnabled={!chooseSeason}
       stickyHeaderIndices={[0]}
     >
@@ -105,7 +108,11 @@ const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
 
               return (
                 <TouchableOpacity
-                  onPress={() => handleWatchShow(ep)}
+                  onPress={() =>
+                    router.push(
+                      `/watchVideo/tv?id=${ep.show_id}&season=${ep.season_number}&ep=${ep.episode_number}`
+                    )
+                  }
                   key={index}
                   className="flex-row gap-5"
                 >
@@ -188,14 +195,18 @@ const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
                         setSelectedSeason(season);
                         setChooseSeason(false);
                       }}
-                      className={`${season.id === selectedSeason?.id ? "bg-gray-700" : "bg-gray-800/90"} h-[80px] w-full rounded-lg  flex-row `}
+                      className={`${season.id === selectedSeason?.id ? "bg-secondary" : "bg-gray-800/90"} h-[80px] w-full rounded-lg  flex-row `}
                       key={index}
                     >
                       <View className="flex-col flex-1 p-5 g ">
-                        <Text className="text-lg font-semibold text-white">
+                        <Text
+                          className={`text-lg font-semibold ${season.id === selectedSeason?.id ? "text-gray-800" : "text-white"}`}
+                        >
                           Season {season?.season_number}
                         </Text>
-                        <Text className="text-sm font-semibold text-gray-400">
+                        <Text
+                          className={`text-sm font-semibold ${season.id === selectedSeason?.id ? "text-gray-600" : "text-gray-400"}`}
+                        >
                           Episodes {season?.episode_count} / Name —{" "}
                           {season?.name}
                         </Text>
@@ -207,17 +218,6 @@ const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
             </ScrollView>
           </View>
         </Modal>
-
-        <WatchModal
-          setShowmodal={setShowmodal}
-          setWatching={setWatching}
-          showModal={showModal}
-          media_type="tv"
-          id={watching?.show_id}
-          season={watching?.season_number}
-          episode={watching?.episode_number}
-          fullEpisodes={allEpisodes}
-        />
       </View>
     </Tabs.ScrollView>
   );

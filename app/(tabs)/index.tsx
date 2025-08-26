@@ -73,7 +73,7 @@ export default function index() {
           <>
             <AppCarousel />
 
-            <View className="flex flex-col flex-1 gap-5 mt-3">
+            <View className="flex flex-col flex-1 gap-2 mt-3">
               {/* Trending */}
               <ShowCase
                 title="Trending"

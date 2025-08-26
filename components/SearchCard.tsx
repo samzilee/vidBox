@@ -1,4 +1,4 @@
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import GenreDisplay from "./GenreDisplay";
@@ -30,9 +30,11 @@ export const SearchCard = ({
   }, [countries]);
 
   return (
-    <Link href={`/details/${item.id}_${item.media_type}`}>
+    <TouchableOpacity
+      onPress={() => router.push(`/details/${item.id}_${item.media_type}`)}
+    >
       <View className="flex flex-row gap-5 h-fit">
-        {SmallImage(item.poster_path || item.backdrop_path, false)}
+        {SmallImage(item.poster_path, false)}
 
         <View className="flex-1 ">
           {/* Title */}
@@ -70,7 +72,7 @@ export const SearchCard = ({
           />
         </View>
       </View>
-    </Link>
+    </TouchableOpacity>
   );
 };
 

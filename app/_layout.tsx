@@ -8,12 +8,15 @@ export default function _layout() {
   return (
     <GestureHandlerRootView>
       <StatusBar hidden={false} />
-
       <Stack screenOptions={{ freezeOnBlur: true, navigationBarHidden: true }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="details/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="search/Search" options={{ headerShown: false }} />
         <Stack.Screen name="viewAll/[type]" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="watchVideo/[toWatch]"
+          options={{ headerShown: false }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

@@ -22,7 +22,7 @@ interface prop {
   loading: boolean;
   ferror: boolean;
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
-  showModalFromHome: boolean;
+  watchFromHome: boolean;
 }
 
 const MainContent = ({
@@ -32,7 +32,7 @@ const MainContent = ({
   loading,
   ferror,
   setRefetch,
-  showModalFromHome,
+  watchFromHome,
 }: prop) => {
   const navigate = useNavigation();
   const [media_data, setMedia_data] = useState<any>(null);
@@ -102,7 +102,7 @@ const MainContent = ({
         <Header
           media_data={media_data}
           media_type={media_type}
-          showModalFromHome={showModalFromHome}
+          watchFromHome={watchFromHome}
         />
       )}
       allowHeaderOverscroll={true}

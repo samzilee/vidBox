@@ -1,32 +1,38 @@
 import DetailPoster from "@/components/DetailPoster";
-import WatchModal from "@/components/WatchModal";
 import { icons } from "@/constants/icons";
 import { FetchEpisodes } from "@/services/api";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 const Header = ({
   media_data,
   media_type,
-  showModalFromHome,
+  watchFromHome,
 }: {
   media_data: Moviedetails | TvShowDetails;
   media_type: string;
-  showModalFromHome: boolean;
+  watchFromHome: boolean;
 }) => {
-  const [showModal, setShowmodal] = useState<boolean>(() => {
-    return showModalFromHome ? showModalFromHome : false;
-  });
   const [episode1, setEpisode1] = useState<Episode | null>(null);
-  const [allEpisodes, setAllEpisodes] = useState<SeasonData | null>(null);
 
   useEffect(() => {
     if (media_type === "tv" && media_data) {
       handleGetEpisodeOne();
     }
+    if (watchFromHome && media_type === "movie" && media_data) {
+      router.push(`/watchVideo/${media_type}?id=${media_data.id}`);
+    }
   }, [media_data]);
+
+  useEffect(() => {
+    if (episode1 && watchFromHome) {
+      router.push(
+        `/watchVideo/${media_type}?id=${episode1.show_id}&season=${episode1.season_number}&ep=${episode1.episode_number}`
+      );
+    }
+  }, [episode1]);
 
   const handleGetEpisodeOne = async () => {
     try {
@@ -35,7 +41,6 @@ const Header = ({
       const ep1 = result.episodes.filter(
         (episode) => episode.episode_number === 1
       );
-      setAllEpisodes(result);
       setEpisode1(ep1[0]);
     } catch (error) {
       console.log(error);
@@ -70,36 +75,15 @@ const Header = ({
         <TouchableOpacity
           className="flex-row items-center justify-center flex-1 py-3 rounded-lg bg-secondary"
           onPress={() => {
-            setShowmodal(true);
+            router.push(
+              `/watchVideo/${media_type}?id=${episode1?.show_id || media_data.id}&season=${episode1?.season_number}&ep=${episode1?.episode_number}`
+            );
           }}
           disabled={!media_data && true}
         >
           <Text className="text-lg font-bold">Watch</Text>
           <Ionicons name="play" size={24} color="black" />
         </TouchableOpacity>
-
-        {media_type === "movie" ? (
-          <WatchModal
-            setShowmodal={setShowmodal}
-            showModal={showModal}
-            id={media_data?.id}
-            media_type={media_type}
-            fullEpisodes={null}
-          />
-        ) : (
-          episode1 && (
-            <WatchModal
-              setWatching={setEpisode1}
-              setShowmodal={setShowmodal}
-              media_type={media_type}
-              showModal={showModal}
-              id={episode1.show_id}
-              season={episode1.season_number}
-              episode={episode1.episode_number}
-              fullEpisodes={allEpisodes}
-            />
-          )
-        )}
       </View>
     </View>
   );

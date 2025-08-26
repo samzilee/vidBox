@@ -25,7 +25,7 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [ferror, setError] = useState<boolean>(false);
   const [reFetch, setRefetch] = useState<boolean>(false);
-  const [showModalFromHome, setShowmodalFromHome] = useState<boolean>(false);
+  const [watchFromHome, setWatchingFromHome] = useState<boolean>(false);
 
   useEffect(() => {
     handleFetchDetails();
@@ -38,7 +38,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     if (from === "fromhome") {
-      setShowmodalFromHome(true);
+      setWatchingFromHome(true);
     }
   }, [from]);
 
@@ -85,7 +85,7 @@ const MovieDetails = () => {
         loading={loading}
         ferror={ferror}
         setRefetch={setRefetch}
-        showModalFromHome={showModalFromHome}
+        watchFromHome={watchFromHome}
       />
     </SafeAreaView>
   );
