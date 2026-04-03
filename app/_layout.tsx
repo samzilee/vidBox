@@ -14,7 +14,11 @@ export default function _layout() {
         <Stack.Screen name="search/Search" options={{ headerShown: false }} />
         <Stack.Screen name="viewAll/[type]" options={{ headerShown: false }} />
         <Stack.Screen
-          name="watchVideo/[toWatch]"
+          name="authPage/LoginModal"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="authPage/SignUpModal"
           options={{ headerShown: false }}
         />
       </Stack>

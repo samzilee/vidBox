@@ -23,7 +23,7 @@ interface Countries_type {
 
 interface TopSearch {
   searchTerm: string;
-  movie_id: number;
+  id: number;
   title: string;
   count: number;
   poster_url: string;

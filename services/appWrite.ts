@@ -10,10 +10,10 @@ const client = new Client()
     
 const database = new Databases(client);
 
-export const updateSearchCount = async (query:string, media: media_type) => {
+export const updateSearchCount = async (query:string, media: media_type, id:number) => {
 
     try{
-            const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [Query.equal("searchTerm", query)]);
+            const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [Query.equal("id", id)]);
         
         
         if(result.documents.length > 0) {
@@ -30,7 +30,7 @@ export const updateSearchCount = async (query:string, media: media_type) => {
         }else {
             await database.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
                 searchTerm: query,
-                movie_id: media.id,
+                id: media.id,
                 count: 1, 
                 title: media.title || media.name || media.original_title,
                 poster_url: `https://image.tmdb.org/t/p/w300${media.poster_path}`,

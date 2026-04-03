@@ -159,7 +159,11 @@ const FilterModal = ({ showModal, setShowModal, media_type }: props) => {
   };
 
   return (
-    <Modal animationType="fade" visible={showModal}>
+    <Modal
+      animationType="slide"
+      visible={showModal}
+      onRequestClose={() => setShowModal(false)}
+    >
       <View className="w-full h-full bg-primary">
         <View className="w-full p-5">
           <TouchableOpacity

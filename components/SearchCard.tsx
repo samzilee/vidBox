@@ -103,7 +103,7 @@ export const TopSearchCard = ({
   return (
     <TouchableOpacity
       onPress={() =>
-        router.push(`/details/${topSearch.movie_id}_${topSearch.media_type}`)
+        router.push(`/details/${topSearch.id}_${topSearch.media_type}`)
       }
     >
       <View className="flex flex-row gap-5 h-fit">
@@ -111,9 +111,17 @@ export const TopSearchCard = ({
 
         <View className="flex-1 ">
           {/* Title */}
-          <Text className="text-lg font-semibold text-white" numberOfLines={1}>
-            {topSearch.title}
-          </Text>
+          <View>
+            <Text
+              className="text-lg font-semibold text-white"
+              numberOfLines={1}
+            >
+              {topSearch.title}
+            </Text>
+            <Text className="text-sm text-gray-400">
+              Search Term - {topSearch.searchTerm}
+            </Text>
+          </View>
 
           <View className="flex flex-row items-center w-full gap-2">
             {/* Media Type */}

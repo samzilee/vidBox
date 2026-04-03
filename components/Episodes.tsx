@@ -1,6 +1,7 @@
+import { stream } from "@/constants/streamURL";
 import { FetchEpisodes } from "@/services/api";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import * as Linking from "expo-linking";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -109,8 +110,12 @@ const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    router.push(
-                      `/watchVideo/tv?id=${ep.show_id}&season=${ep.season_number}&ep=${ep.episode_number}`
+                    Linking.openURL(
+                      stream.tvStreamUrl(
+                        ep.show_id,
+                        ep.season_number,
+                        ep.episode_number
+                      )
                     )
                   }
                   key={index}
@@ -177,7 +182,11 @@ const Episodes = ({ media_data }: { media_data: TvShowDetails }) => {
         </View>
 
         {/* seasons selection option */}
-        <Modal visible={chooseSeason} animationType="slide">
+        <Modal
+          visible={chooseSeason}
+          animationType="slide"
+          onRequestClose={() => setChooseSeason(false)}
+        >
           <View className="flex-1 bg-primary">
             <TouchableOpacity onPress={() => setChooseSeason(false)}>
               <View className="items-end w-full pt-5 pr-9 ">

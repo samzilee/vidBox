@@ -18,7 +18,16 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.vidBox"
+      "package": "com.anonymous.vidBox",
+       "queries": [
+        {
+          "action": "android.intent.action.VIEW",
+          "category": ["android.intent.category.BROWSABLE"],
+          "data": {
+            "scheme": "https"
+          }
+        }
+      ]
     },
     "web": {
       "bundler": "metro",

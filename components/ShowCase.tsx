@@ -16,7 +16,7 @@ interface props {
 const ShowCase = ({ title, viewAll, type, fetchData }: props) => {
   const [data, setData] = useState<Array<media_type>>([]);
   const [ferror, setError] = useState<boolean>(false);
-  const [option, setOption] = useState<string>("tv");
+  const [option, setOption] = useState<string>("movie");
 
   useEffect(() => {
     if (data.length === 0) {

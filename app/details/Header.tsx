@@ -1,8 +1,10 @@
 import DetailPoster from "@/components/DetailPoster";
 import { icons } from "@/constants/icons";
+import { stream } from "@/constants/streamURL";
 import { FetchEpisodes } from "@/services/api";
+import { openInBrave } from "@/services/openInBrave";
 import { Ionicons } from "@expo/vector-icons";
-import { router, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
@@ -22,14 +24,18 @@ const Header = ({
       handleGetEpisodeOne();
     }
     if (watchFromHome && media_type === "movie" && media_data) {
-      router.push(`/watchVideo/${media_type}?id=${media_data.id}`);
+      openInBrave(stream.movieStreamURL(media_data.id));
     }
   }, [media_data]);
 
   useEffect(() => {
     if (episode1 && watchFromHome) {
-      router.push(
-        `/watchVideo/${media_type}?id=${episode1.show_id}&season=${episode1.season_number}&ep=${episode1.episode_number}`
+      openInBrave(
+        stream.tvStreamUrl(
+          episode1.show_id,
+          episode1.season_number,
+          episode1.episode_number
+        )
       );
     }
   }, [episode1]);
@@ -75,8 +81,13 @@ const Header = ({
         <TouchableOpacity
           className="flex-row items-center justify-center flex-1 py-3 rounded-lg bg-secondary"
           onPress={() => {
-            router.push(
-              `/watchVideo/${media_type}?id=${episode1?.show_id || media_data.id}&season=${episode1?.season_number}&ep=${episode1?.episode_number}`
+            openInBrave(
+              stream.dynamicStream(
+                media_type,
+                episode1?.show_id || media_data.id,
+                episode1?.season_number,
+                episode1?.episode_number
+              )
             );
           }}
           disabled={!media_data && true}

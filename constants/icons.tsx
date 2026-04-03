@@ -51,9 +51,18 @@ const searchIcon = () => {
   return <Ionicons name="search" size={24} color={"white"} />;
 };
 
-//Back Icon or Chevron
+//Back Icon - Chevron
 const backIcon = () => {
   return <Ionicons name="chevron-back" size={29} color={"white"} />;
+};
+
+//forward Icon - Chevron
+const forwardIcons = () => {
+  return <Ionicons name="chevron-forward" size={20} color={"white"} />;
+};
+
+const mailIcon = () => {
+  return <Ionicons name="mail-outline" size={20} color={"white"} />;
 };
 
 export const icons = {
@@ -64,4 +73,6 @@ export const icons = {
   more,
   searchIcon,
   backIcon,
+  mailIcon,
+  forwardIcons,
 };

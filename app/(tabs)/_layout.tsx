@@ -132,14 +132,17 @@ export default function _layout() {
       <Tabs.Screen
         name="more"
         options={{
-          headerShown: false,
+          headerShown: true,
           headerStyle: {
             backgroundColor: "#111827",
           },
           headerTitle: () => (
-            <Text className="text-2xl font-bold text-white">Settings</Text>
+            <Text className="text-2xl font-bold text-white text-[1.7rem]">
+              Settings
+            </Text>
           ),
           title: "More",
+
           tabBarIcon: ({ focused }) => (
             <TabStyle focused={focused} name={"More"} icon={icons.more} />
           ),

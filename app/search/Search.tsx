@@ -81,7 +81,7 @@ const Search = () => {
         setErrorMessage("Media Not Found");
       } else {
         setData(mainResult);
-        updateSearchCount(query, mainResult[0]);
+        updateSearchCount(query, mainResult[0], mainResult[0].id);
       }
       setLoading(false);
     } catch (error) {
@@ -190,9 +190,8 @@ const Search = () => {
           </Text>
         ) : query === "" ? (
           <FlatList
-            style={{ paddingBottom: 10 }}
             data={topSearched}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => item.id.toString()}
             renderItem={({ item }) => (
               <TopSearchCard topSearch={item} countries={countries} />
             )}
@@ -201,7 +200,6 @@ const Search = () => {
           />
         ) : (
           <FlatList
-            style={{ paddingBottom: 10 }}
             data={data}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
